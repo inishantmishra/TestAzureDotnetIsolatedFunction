@@ -15,7 +15,7 @@ var host = new HostBuilder()
                     .AddJsonFile("local.settings.json", optional: true)
                     .AddJsonFile("appsettings.json", optional: false)
                     .AddEnvironmentVariables())
-    .ConfigureServices(services =>
+    .ConfigureServices((hostContext,services) =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
@@ -29,23 +29,10 @@ var host = new HostBuilder()
                 options.Rules.Remove(toRemove);
             }
         });
-        var serviceProvider = services.BuildServiceProvider();
-
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+      
+        var configuration = hostContext.Configuration;
 
         services.AddHttpClient();
-    })
-    .ConfigureLogging(logging =>
-    {
-        logging.Services.Configure<LoggerFilterOptions>(options =>
-        {
-            LoggerFilterRule defaultRule = options.Rules.FirstOrDefault(rule => rule.ProviderName
-                == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
-            if (defaultRule is not null)
-            {
-                options.Rules.Remove(defaultRule);
-            }
-        });
     })
     .Build();
 
