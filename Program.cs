@@ -31,7 +31,7 @@ var host = new HostBuilder()
         });
       
         var configuration = hostContext.Configuration;
-
+      services.AddSingleton<ITelemetryInitializer, LogTelemetryInitializer>();
         services.AddHttpClient();
     })
     .Build();
