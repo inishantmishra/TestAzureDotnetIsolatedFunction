@@ -44,11 +44,11 @@ namespace TestFunction
             Exception ex = new InvalidOperationException("Test Exception By Nish");
            for (var i = 0; i <= 2000; i++)
             {
-                _logger.LogError("SampIn Without Processor {i}", i);
+                _logger.LogError("Can Be sampled Processor {i}", i);
                 //Thread.Sleep(500);
-                _logger.LogErrorWithNoSampling(ex, "SampIn Ex With Processor {i}", i);
+                _logger.LogErrorWithNoSampling(ex, "Should Not be sampled: ex {i}", i);
                 //Thread.Sleep(500);
-                _logger.LogErrorWithNoSampling("SampIn With Processor {i}", i);
+                _logger.LogErrorWithNoSampling("Should Not be sampled {i}", i);
 
                 ++Counter;
             }
