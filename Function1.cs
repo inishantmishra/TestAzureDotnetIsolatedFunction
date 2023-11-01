@@ -36,5 +36,21 @@ namespace TestFunction
                 throw;
             }
         }
+
+        [Function("LoggingPOCFunction")]
+          public async Task LoggingPOCFunction(
+            [TimerTrigger("0 0 10 * * *", RunOnStartup = true)] TimerInfo timer)
+        {
+            Exception ex = new InvalidOperationException("Test Exception By Nish");
+           for (var i = 0; i <= 2000; i++)
+            {
+                _logger.LogError("SampIn Without Processor {i}", i);
+                //Thread.Sleep(500);
+                _logger.LogErrorWithNoSampling(ex, "SampIn Ex With Processor {i}", i);
+                //Thread.Sleep(500);
+                _logger.LogErrorWithNoSampling("SampIn With Processor {i}", i);
+
+                ++Counter;
+            }
     }
 }
